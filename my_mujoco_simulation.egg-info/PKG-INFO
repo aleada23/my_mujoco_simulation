@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: my_mujoco_simulation
+Version: 0.1.0
+Summary: A simple example Python package
+Home-page: https://github.com/yourusername/my_package
+Author: Alessandro Adami
+Author-email: your.email@example.com
+Dynamic: author
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: summary
