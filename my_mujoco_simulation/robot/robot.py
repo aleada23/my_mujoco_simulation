@@ -75,8 +75,10 @@ class Robot:
         act_names = [k for k in ids if "arm" in k]
         return np.array([data.qpos[model.jnt_qposadr[self.joint_ids[i]]] for i in act_names])
 
-    def get_joint_velocities(self, model, data):
-        return np.array([data.qvel[model.jnt_dofadr[self.joint_ids[jn]]] for jn in self.joint_names])
+    def get_arm_joint_velocities(self, model, data):
+        ids = self.get_robot_dict()["joints"]
+        act_names = [k for k in ids if "arm" in k]
+        return np.array([data.qvel[model.jnt_dofadr[self.joint_ids[jn]]] for jn in act_names])
 
     def set_actuator_ctrl(self, ctrl_values):
         for i, an in enumerate(self.actuator_names):
@@ -163,13 +165,20 @@ class Robot:
             raise ValueError("End-effector not defined.")
         ee_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, self.ee_name)
         pos = data.site_xpos[ee_id].copy()
-        quat = data.site_xquat[ee_id].copy()
-        return pos, quat
+        mat = data.site_xmat[ee_id].copy() 
+        quat = np.zeros(4)
+        mujoco.mju_mat2Quat(quat, mat.flatten())
+        pose = np.hstack((pos, quat))
+        return pose
 
     def get_end_effector_site(self, model):
         if self.ee_name is None:
             raise ValueError("End-effector not defined.")
         return mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, self.ee_name)
+    def get_end_effector_name(self, model):
+        if self.ee_name is None:
+            raise ValueError("End-effector not defined.")
+        return self.ee_name
 
     def get_body_pose_with_frame(self, model, data, body_name, frame_name = "world"):
         if self.ee_name is None:
@@ -194,7 +203,7 @@ class Robot:
         return self.data.xpos[bid], self.data.xquat[bid]
 
     def map_pose_into_robot(self, model, data, pose):
-        base_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BPDY, self.base_name)
+        base_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, self.base_name)
         base_rot = data.xmat[base_id].reshape(3,3)
         base_pos = data.xpos[base_id]
         pose[:3] = pose[:3] + base_pos

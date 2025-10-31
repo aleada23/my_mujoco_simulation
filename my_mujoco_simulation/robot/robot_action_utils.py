@@ -63,6 +63,17 @@ def inverse_kinematic(model, data, robot, ee_name, ee_target_pose, Kp = 1.0, fra
         dq = np.linalg.pinv(J_full) @ v_des
     return dq, error
 
+def velocity_cart2joint(model, data, robot, ee_name, v_des, frame = "base"):
+    if frame == "base":
+        J_full = robot.get_Jacobian_in_base(model, data, frame_name = ee_name)
+        ee_pos, ee_orn = robot.get_body_pose_with_frame(model, data, body_name = ee_name)
+    else: 
+        ee_pos, ee_orn = forward_kinematic(model, data, robot, ee_name, frame)
+        J_full = robot.get_Jacobian(model, data, ee_name)
+    dq = np.linalg.pinv(J_full) @ v_des
+
+    return dq
+
 def jacobian_in_base_frame(model, data, robot, ee_id, base_body):
     jacp = robot.get_Jacobian(model, data, frame)[:3, :]
     jacr = robot.get_Jacobian(model, data, frame)[3:, :]

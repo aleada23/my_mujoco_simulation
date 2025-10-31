@@ -1,0 +1,24 @@
+<mujoco model="simple_table">
+  <default>
+    <!-- Table class for easy reuse -->
+    <default class="table">
+      <geom type="box" contype="1" conaffinity="1" mass="10"/>
+      
+    </default>
+  </default>
+
+  <worldbody>
+    <!-- Table body -->
+    <body name="table_base" pos="0 0 0 " childclass="table">
+      <!-- Table top -->
+      <geom name="table_top"  size="1.0 0.5 0.05" pos="0 0 0.8" rgba="1 1 1 1" solref="0.005 1" solimp="0.9 0.95 0.001"/>
+      <site name="object_target" pos="-0.5 0 0.85" size="0.05" rgba="0 1 0 0.2"/> 
+
+      <!-- Table legs -->
+      <geom name="table_leg1" size="0.05 0.05 0.4" pos="0.95 0.45 0.4" rgba="1 1 1 1"/>
+      <geom name="table_leg2" size="0.05 0.05 0.4" pos="-0.95 0.45 0.4" rgba="1 1 1 1"/>
+      <geom name="table_leg3" size="0.05 0.05 0.4" pos="0.95 -0.45 0.4" rgba="1 1 1 1"/>
+      <geom name="table_leg4" size="0.05 0.05 0.4" pos="-0.95 -0.45 0.4" rgba="1 1 1 1"/>
+    </body>
+  </worldbody>
+</mujoco>

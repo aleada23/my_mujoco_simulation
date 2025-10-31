@@ -205,7 +205,7 @@ class MeasureGripperSites(py_trees.behaviour.Behaviour):
 
         self.mean_pos = (self.l_site_pos + self.r_site_pos) / 2
 
-        print(self.mean_pos)
+        print("Table height", self.mean_pos[2])
 
         return py_trees.common.Status.SUCCESS
 
@@ -239,13 +239,13 @@ class MeasureMassWithTorque(py_trees.behaviour.Behaviour):
         if abs(self.data.time - self.start_time) < 5:
             if abs(self.data.time - self.start_time) > 4:
                 self.torque.append(self.robot.get_sensor_data(self.data, self.sens_id))
-                return py_trees.common.Status.SUCCESS
+                
             return py_trees.common.Status.RUNNING
         self.mean_torque = np.mean(self.torque)
         self.measured_mass = self.mean_torque / (self.dist * -9.81)
         self.blackboard.set(self.name, self.measured_mass)
-        
-        return py_trees.common.Status.FAILURE
+        print("object masss", self.measured_mass+0.46)
+        return py_trees.common.Status.SUCCESS
 
     def terminate(self, new_status):
         self.logger.debug(f"{self.name} [MeasureGripperSites::terminate()] -> {new_status}")
@@ -273,6 +273,7 @@ class MeasureGripperOpnening(py_trees.behaviour.Behaviour):
         if abs(self.data.time - self.start_time) < 3:
             if abs(self.data.time - self.start_time) > 2:
                 self.measure = self.controller.get_gripper_opening()
+                print("object size", self.measure)
                 return py_trees.common.Status.SUCCESS
             return py_trees.common.Status.RUNNING
         

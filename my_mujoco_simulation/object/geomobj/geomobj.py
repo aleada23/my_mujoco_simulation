@@ -2,11 +2,14 @@ from my_mujoco_simulation.object.object import SimObject
 import xml.etree.ElementTree as ET
 from my_mujoco_simulation.simulation.xml_utils import rename_subtree, ensure_section, merge_section
 import copy
+import mujoco
+import numpy as np
 
 
 class GeometricObject(SimObject):
     def __init__(self, obj_path, prefix=None, pos=None, quat=None, size=None, color=None, friction=None, mass=None):
         super().__init__(obj_path, prefix, pos, quat)
+        self.obj_path = obj_path
         self.obj_dict["subtype"] = "geometric"
         self.size = size
         self.color = color
@@ -45,7 +48,10 @@ class GeometricObject(SimObject):
                 if "base" in copy_body.attrib.get("name", ""):
                     copy_body.set("pos", object_dict["position"])
                     copy_body.set("quat", object_dict["orientation"])
+                if "geom" in copy_body.attrib.get("name", ""):
+                    copy_body.set("friction", self.friction)
                 env_worldbody.append(self.set_object_subtree(copy.deepcopy(copy_body)))
+                
 
     def set_object_subtree(self, element):
         if "name" in element.attrib:
@@ -62,3 +68,14 @@ class GeometricObject(SimObject):
             self.set_object_subtree(child)
 
         return element
+
+    def get_pose(self, model, data):
+        tree = ET.parse(self.obj_path)
+        root = tree.getroot()
+        bodies = [b.attrib.get("name") for b in root.findall(".//body[@name]")]
+        object_base = f"{self.prefix}_{bodies[0]}" if bodies else None
+        object_base_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, object_base)
+        obj_quat = data.xquat[object_base_id]
+        obj_pos = data.xpos[object_base_id]
+
+        return np.hstack((obj_pos, obj_quat))

@@ -78,7 +78,7 @@ except KeyboardInterrupt:
     py_trees.blackboard.Blackboard.enable_activity_stream()
     reader = py_trees.blackboard.Client()
     print(py_trees.blackboard.Blackboard.storage)
-    """force_data= np.array(torque_data)
+    force_data= np.array(torque_data)
     time_plot = np.arange(len(torque_data)) * sim_model.opt.timestep
     plt.figure(figsize=(10, 4))
     plt.plot(time_plot, force_data[:, 0], label="Torque X")
@@ -90,5 +90,5 @@ except KeyboardInterrupt:
     plt.ylabel("Torque [Nm]")
     plt.grid(True)
     plt.legend(title="Components")  # Add legend with title
-    plt.show()"""
+    plt.show()
     

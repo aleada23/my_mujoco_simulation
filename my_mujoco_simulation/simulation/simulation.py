@@ -64,6 +64,8 @@ class Simulation:
 
     def get_robot(self, index):
         return self.robot_list[index]
+    def get_object(self, index):
+        return self.object_list[index]
     
     #Object set up
 
