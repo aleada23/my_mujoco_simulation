@@ -153,6 +153,12 @@ class Robot:
                 qpos_addr = model.jnt_qposadr[jid]
                 data.ctrl[i] = data.qpos[qpos_addr]
     
+    def get_arm_joint_torque(self, model, data):
+        ids = self.get_robot_dict()["joints"]
+        act_names = [k for k in ids if "arm" in k]
+        return np.array([data.qpos[model.jnt_qposadr[self.joint_ids[i]]] for i in act_names])
+
+
     #Sensors
     def get_sensor_data(self, data, sensor_id):
         #if sensor_id is None:
@@ -171,10 +177,24 @@ class Robot:
         pose = np.hstack((pos, quat))
         return pose
 
+    def get_end_effector_velocity(self, model, data):
+        if self.ee_name is None:
+            raise ValueError("End-effector not defined.")
+    
+        ee_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, self.ee_name)
+
+        jac = self.get_Jacobian_in_base(model, data)
+
+        # Compute site velocity: v = J * qdot
+        qvel = self.get_arm_joint_velocities(model, data)
+        vel = jac @ qvel #[3 linear, 3 angular]
+        return vel
+
     def get_end_effector_site(self, model):
         if self.ee_name is None:
             raise ValueError("End-effector not defined.")
         return mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, self.ee_name)
+    
     def get_end_effector_name(self, model):
         if self.ee_name is None:
             raise ValueError("End-effector not defined.")

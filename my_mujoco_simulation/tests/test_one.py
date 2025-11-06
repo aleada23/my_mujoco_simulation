@@ -75,7 +75,7 @@ try:
 
 except KeyboardInterrupt:
     print("Simulation interrupted by user.")
-    py_trees.blackboard.Blackboard.enable_activity_stream()
+    """py_trees.blackboard.Blackboard.enable_activity_stream()
     reader = py_trees.blackboard.Client()
     print(py_trees.blackboard.Blackboard.storage)
     force_data= np.array(torque_data)
@@ -91,4 +91,4 @@ except KeyboardInterrupt:
     plt.grid(True)
     plt.legend(title="Components")  # Add legend with title
     plt.show()
-    
+    """

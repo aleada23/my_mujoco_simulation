@@ -244,7 +244,7 @@ class MeasureMassWithTorque(py_trees.behaviour.Behaviour):
         self.mean_torque = np.mean(self.torque)
         self.measured_mass = self.mean_torque / (self.dist * -9.81)
         self.blackboard.set(self.name, self.measured_mass)
-        print("object masss", self.measured_mass+0.46)
+        print("object masss", self.measured_mass+0.466)
         return py_trees.common.Status.SUCCESS
 
     def terminate(self, new_status):

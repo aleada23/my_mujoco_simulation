@@ -103,4 +103,5 @@ def get_child_pose_from_parent(model, data, parent_pos, parent_body_name, child_
 
     return child_pos_world, R_child_world
 
-
+def get_mass_from_torques(model, data, robot):
+    pass
