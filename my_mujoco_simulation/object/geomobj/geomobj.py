@@ -79,3 +79,10 @@ class GeometricObject(SimObject):
         obj_pos = data.xpos[object_base_id]
 
         return np.hstack((obj_pos, obj_quat))
+    
+    def get_body_name(self):
+        tree = ET.parse(self.obj_path)
+        root = tree.getroot()
+        bodies = [b.attrib.get("name") for b in root.findall(".//body[@name]")]
+        object_base = f"{self.prefix}_{bodies[0]}" if bodies else None
+        return object_base

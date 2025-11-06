@@ -136,7 +136,7 @@ class Robot:
         return R @ J
 
     def set_robot_init_config(self, model, data):
-        if self.init_config == None:
+        if self.init_config is None:
             return
         # --- Set joint qpos
         for name, qpos_value in zip(self.joint_names, self.init_config):
@@ -154,9 +154,13 @@ class Robot:
                 data.ctrl[i] = data.qpos[qpos_addr]
     
     def get_arm_joint_torque(self, model, data):
-        ids = self.get_robot_dict()["joints"]
-        act_names = [k for k in ids if "arm" in k]
-        return np.array([data.qpos[model.jnt_qposadr[self.joint_ids[i]]] for i in act_names])
+        ids = self.get_robot_dict()["actuatorsindex"]
+        arm_ids = []
+        act_names = self.get_robot_dict()["actuators"]
+        for j in range(len(act_names)):
+            if "arm" in act_names[j]:
+                arm_ids.append(ids[act_names[j]])
+        return np.array([data.qfrc_actuator[i] for i in arm_ids])
 
 
     #Sensors
@@ -175,7 +179,7 @@ class Robot:
         quat = np.zeros(4)
         mujoco.mju_mat2Quat(quat, mat.flatten())
         pose = np.hstack((pos, quat))
-        return pose
+        return self.map_pose_into_robot(model, data, pose)
 
     def get_end_effector_velocity(self, model, data):
         if self.ee_name is None:
@@ -226,14 +230,19 @@ class Robot:
         base_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, self.base_name)
         base_rot = data.xmat[base_id].reshape(3,3)
         base_pos = data.xpos[base_id]
-        pose[:3] = pose[:3] + base_pos
-        rot = np.zeros((3,3))
-        mujoco.mju_quat2Mat(rot.flatten(), pose[3:])
-        rot = base_rot @ rot
+        pose[:3] = base_rot @ (pose[:3] - base_pos)
+        rot = np.zeros((9))
+        mujoco.mju_quat2Mat(rot, pose[3:])
+        rot = base_rot @ rot.reshape(3,3)
         quat = np.zeros(4)
-        mujoco.mju_mat2Quat(quat, rot.flatten())
+        mujoco.mju_mat2Quat(quat, rot.reshape(9,1))
         pose[3:] = quat
         return pose
+    
+    def map_velocity_into_robot(self, model, data, vel):
+        base_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, self.base_name)
+        base_rot = data.xmat[base_id].reshape(3,3)
+        return base_rot @ vel
     # Export
     def get_robot_dict(self):
         return copy.deepcopy({

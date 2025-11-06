@@ -238,8 +238,9 @@ class MeasureMassWithTorque(py_trees.behaviour.Behaviour):
     def update(self):
         if abs(self.data.time - self.start_time) < 5:
             if abs(self.data.time - self.start_time) > 4:
-                self.torque.append(self.robot.get_sensor_data(self.data, self.sens_id))
-                
+                #self.torque.append(self.robot.get_sensor_data(self.data, self.sens_id))
+                mass = action_utils.get_mass_from_torques(self.model, self.data, self.robot)
+                print(mass)
             return py_trees.common.Status.RUNNING
         self.mean_torque = np.mean(self.torque)
         self.measured_mass = self.mean_torque / (self.dist * -9.81)

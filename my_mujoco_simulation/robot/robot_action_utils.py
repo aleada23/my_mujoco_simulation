@@ -104,4 +104,10 @@ def get_child_pose_from_parent(model, data, parent_pos, parent_body_name, child_
     return child_pos_world, R_child_world
 
 def get_mass_from_torques(model, data, robot):
-    pass
+    joint_torques = robot.get_arm_joint_torque(model, data)
+    jac = robot.get_Jacobian_in_base(model, data)
+    J_inv_T = np.linalg.pinv(jac.T)
+    h_e = J_inv_T @ joint_torques
+    print(joint_torques, h_e)
+    return None
+

@@ -15,7 +15,12 @@ PEDESTAL_PATH = "../object/pedestal/models/box_pedestal.xml"
 sim = Simulation(env_path=ENVIRONMENT_PATH)
 
 #Add robot and objects to the simulation
-sim.add_robot(ROBOT_PATH, position="0.0 0.0 0.5", orientation="1.0 0.0 0.0 0.0", init_config = [0, 0, 0, -1.57079, 0, 1.57079, -0.7853]) #Randomize init config
+min_joints = 0.2 * np.array([-2.9, -1.76, -2.9, -3.0718, -2.9, -0.0175, -2.9])
+max_joints = 0.2 * np.array([2.9, 1.76, 2.9, -3.0718, -0.0698, 3.7525, 2.9])
+home_config = np.array([0, 0, 0, -1.57079, 0, 1.57079, -0.7853])
+robot_config = np.clip(np.random.normal(home_config, (np.array(max_joints)-np.array(min_joints))/6), np.array(min_joints), np.array(max_joints))
+#Robot rest position [0, 0, 0, -1.57079, 0, 1.57079, -0.7853]
+sim.add_robot(ROBOT_PATH, position="0.0 0.0 0.5", orientation="1.0 0.0 0.0 0.0", init_config = robot_config)
 sim.add_object(TABLE_PATH, pos="1.2 0.0 0.0")
 sim.add_object(PEDESTAL_PATH, pos = "0.0 0.0 0.25", size = "0.15 0.15 0.25")
 
@@ -55,20 +60,20 @@ try:
             #GET END-EFFECTOR VELOCITIES IN ROBOT BASE FRAME
             ee_vel = robot.get_end_effector_velocity(sim_model, sim_data)
             #OBJECT POSE WRT ROBOT FRAME 
-            #Target pose is:
             object_pose = robot.map_pose_into_robot(sim_model, sim_data, sim.get_object(2).get_pose(sim_model, sim_data))
+            object_lin_velocities = robot.map_velocity_into_robot(sim_model, sim_data, sim_data.body(sim.get_object(2).get_body_name()).subtree_linvel)
+            object_ang_velocities = robot.map_velocity_into_robot(sim_model, sim_data, sim_data.body(sim.get_object(2).get_body_name()).subtree_angmom)
+            goal_target_pose = robot.map_pose_into_robot(sim_model, sim_data, np.array([1.0-0.5, 0, 0.85, 1.0, 0.0, 0.0, 0.0]))
 
             #VELOCITY CONTROLLER with target cartesian pose
-            #
-            #target_pose = target_poses[idx]
-            #gain = 2.0 #Keep between 0 and 2 to avoid instabilities
-            #dq, error = action_utils.inverse_kinematic(sim_model, sim_data, robot, robot.get_end_effector_name(sim_model), target_pose, Kp = gain)
-            #if np.allclose(error[:], 0, atol=1e-2):
-            #    idx = idx + 1
+            target_pose = target_poses[idx]
+            gain = 1.0 #Keep between 0 and 2 to avoid instabilities
+            dq, error = action_utils.inverse_kinematic(sim_model, sim_data, robot, robot.get_end_effector_name(sim_model), target_pose, Kp = gain)
+            if np.allclose(error[:], 0, atol=1e-2):
+                idx = idx + 1
             #VELOCITY CONTROLLER with cartesian velocity
-            #
-            target_vel = [0.1, 0.0, 0.0, 0.0, 0.0, 0.0]
-            dq = action_utils.velocity_cart2joint(sim_model, sim_data, robot, robot.get_end_effector_name(sim_model), target_vel)
+            #target_vel = [0.0, 0.0, 0.0, 0.0, 0.0, 0.1]
+            #dq = action_utils.velocity_cart2joint(sim_model, sim_data, robot, robot.get_end_effector_name(sim_model), target_vel)
 
             #APPLY VELOCITIES TO THE CONTROLLER
             controller.set_joint_velocity(dq)
