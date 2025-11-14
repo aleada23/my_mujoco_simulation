@@ -86,3 +86,10 @@ class GeometricObject(SimObject):
         bodies = [b.attrib.get("name") for b in root.findall(".//body[@name]")]
         object_base = f"{self.prefix}_{bodies[0]}" if bodies else None
         return object_base
+    
+    def get_call_geom_name(self):
+        tree = ET.parse(self.obj_path)
+        root = tree.getroot()
+        geom = [b.attrib.get("name") for b in root.findall(".//geom[@name]")]
+        object_geom = f"{self.prefix}_{geom[0]}" if geom else None
+        return object_geom

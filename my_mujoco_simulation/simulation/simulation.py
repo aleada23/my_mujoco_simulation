@@ -149,8 +149,6 @@ class Simulation:
         for robot in self.robot_list:
             robot._build_mujoco_ids(self.sim_model, self.sim_data)
             robot.set_robot_init_config(self.sim_model, self.sim_data)
-            
-            
         
         os.remove(self.env_model)
         print(f"Cleaned up temporary model file: {self.env_model}")

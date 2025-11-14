@@ -211,38 +211,38 @@
                     
                     <body name="hand" pos="0 0 0.107" quat="0.9238795 0 0 -0.3826834">
                       <inertial mass="0.73" pos="-0.01 0 0.03" diaginertia="0.001 0.0025 0.0017"/>
-                      <geom mesh="hand_0" material="off_white" class="visual"/>
-                      <geom mesh="hand_1" material="black" class="visual"/>
-                      <geom mesh="hand_2" material="black" class="visual"/>
-                      <geom mesh="hand_3" material="white" class="visual"/>
-                      <geom mesh="hand_4" material="off_white" class="visual"/>
-                      <geom mesh="hand_c" class="collision"/>
+                      <geom mesh="hand_0" material="off_white" class="visual" name="hand_0"/>
+                      <geom mesh="hand_1" material="black" class="visual" name="hand_1"/>
+                      <geom mesh="hand_2" material="black" class="visual" name="hand_2"/>
+                      <geom mesh="hand_3" material="white" class="visual" name="hand_3"/>
+                      <geom mesh="hand_4" material="off_white" class="visual" name="hand_4"/>
+                      <geom mesh="hand_c" class="collision" name="hand_c"/>
                       <site name="ft_sensor_site" pos="0 0 0.0584" size="0.01" rgba="0 1 0 0.3" type="sphere"/>
                       <body name="left_finger" pos="0 0 0.0584">
                         <site name="left_fingertip" pos="0 0 0.053" size="0.002" type="sphere" rgba="1 0 0 1"/>
                         <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7"/>
                         <joint name="finger_joint1" class="finger"/>
-                        <geom mesh="finger_0" material="off_white" class="visual"/>
-                        <geom mesh="finger_1" material="black" class="visual"/>
-                        <geom mesh="finger_0" class="collision"/>
-                        <geom class="fingertip_pad_collision_1"/>
-                        <geom class="fingertip_pad_collision_2"/>
-                        <geom class="fingertip_pad_collision_3"/>
-                        <geom class="fingertip_pad_collision_4"/>
-                        <geom class="fingertip_pad_collision_5"/>
+                        <geom mesh="finger_0" material="off_white" class="visual" name="finger_0l"/>
+                        <geom mesh="finger_1" material="black" class="visual" name="finger_1l"/>
+                        <geom mesh="finger_0" class="collision" name="finger_cl"/>
+                        <geom class="fingertip_pad_collision_1" name="fingertip_pad_collision_1l"/>
+                        <geom class="fingertip_pad_collision_2" name="fingertip_pad_collision_2l"/>
+                        <geom class="fingertip_pad_collision_3" name="fingertip_pad_collision_3l"/>
+                        <geom class="fingertip_pad_collision_4" name="fingertip_pad_collision_4l"/>
+                        <geom class="fingertip_pad_collision_5" name="fingertip_pad_collision_5l"/>
                       </body>
                       <body name="right_finger" pos="0 0 0.0584" quat="0 0 0 1">
                         <site name="right_fingertip" pos="0 0 0.053" size="0.002" type="sphere" rgba="1 0 0 1"/>
                         <inertial mass="0.015" pos="0 0 0" diaginertia="2.375e-6 2.375e-6 7.5e-7"/>
                         <joint name="finger_joint2" class="finger"/>
-                        <geom mesh="finger_0" material="off_white" class="visual"/>
-                        <geom mesh="finger_1" material="black" class="visual"/>
-                        <geom mesh="finger_0" class="collision"/>
-                        <geom class="fingertip_pad_collision_1"/>
-                        <geom class="fingertip_pad_collision_2"/>
-                        <geom class="fingertip_pad_collision_3"/>
-                        <geom class="fingertip_pad_collision_4"/>
-                        <geom class="fingertip_pad_collision_5"/>
+                        <geom mesh="finger_0" material="off_white" class="visual" name="finger_0r"/>
+                        <geom mesh="finger_1" material="black" class="visual" name="finger_1r"/>
+                        <geom mesh="finger_0" class="collision" name="finger_cr"/>
+                        <geom class="fingertip_pad_collision_1" name="fingertip_pad_collision_1r"/>
+                        <geom class="fingertip_pad_collision_2" name="fingertip_pad_collision_2r"/>
+                        <geom class="fingertip_pad_collision_3" name="fingertip_pad_collision_3r"/>
+                        <geom class="fingertip_pad_collision_4" name="fingertip_pad_collision_4r"/>
+                        <geom class="fingertip_pad_collision_5" name="fingertip_pad_collision_5r"/>
                       </body>
                     <site name="ee_pose" pos="0 0 0.103" size="0.001" rgba="0 0 1 0.3"/> <!--middle of finger tips it has to be the last site of the robot-->
                     </body>

@@ -10,6 +10,7 @@ ENVIRONMENT_PATH = "../environment/models/mobot_lab/mobot_lab.xml"
 ROBOT_PATH = "../robot/models/managerie_panda/robot.xml"
 TABLE_PATH = "../object/table/models/simple_table_with_target.xml"
 PEDESTAL_PATH = "../object/pedestal/models/box_pedestal.xml"
+time_step = 0.001
 
 #Create simulation with environment only
 sim = Simulation(env_path=ENVIRONMENT_PATH)
@@ -39,6 +40,7 @@ sim.add_object("../object/geomobj/models/box.xml", pos = obj_pos_str, size = "0.
 
 #Create Mujoco model and data
 sim_model, sim_data = sim.launch(pretty_xml=False)
+sim_model.opt.timestep = time_step
 robot = sim.get_robot(0)
 controller = Controller(sim_model, sim_data, robot)
 
@@ -46,7 +48,7 @@ target_poses = [[0.3, 0.0, 0.4, 0.0, 1.0, 0.0, 0.0], [0.5, 0.0, 0.35, 0.0, 1.0, 
 idx = 0
 
 try:
-    with mujoco.viewer.launch_passive(sim_model, sim_data, show_left_ui = False, show_right_ui = True) as viewer:
+    with mujoco.viewer.launch_passive(sim_model, sim_data, show_left_ui = True, show_right_ui = False) as viewer:
 
         while viewer.is_running():
             #ROBOT STATE 7 JOINTS
@@ -80,6 +82,22 @@ try:
             
             #MUJOCO SERVICE FUNCTIONS
             mujoco.mj_step(sim_model, sim_data)
+
+            object_contact = False
+            table_contact = False
+            for i in range(sim_data.ncon):
+                contact = sim_data.contact[i]
+                if "hand" in mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2) or "finger" in mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2):
+                    if mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1) == sim.get_object(2).get_call_geom_name():
+                        object_contact = True
+                    elif mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1) == sim.get_object(0).get_call_geom_name():
+                        table_contact = True
+                if "hand" in mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1) or "finger" in mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1):
+                    if mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2) == sim.get_object(2).get_call_geom_name():
+                        object_contact = True
+                    elif mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2) == sim.get_object(0).get_call_geom_name():
+                        table_contact = True
+
             viewer.sync()
 
 except KeyboardInterrupt:

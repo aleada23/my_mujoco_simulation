@@ -96,3 +96,10 @@ class Table(SimObject):
             self.set_table_subtree(child)
 
         return element
+    
+    def get_call_geom_name(self):
+        tree = ET.parse(self.obj_path)
+        root = tree.getroot()
+        geom = [b.attrib.get("name") for b in root.findall(".//geom[@name]")]
+        object_geom = f"{self.prefix}_{geom[0]}" if geom else None
+        return object_geom
