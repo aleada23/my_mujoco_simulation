@@ -1,0 +1,11 @@
+<mujoco model="camera_example">
+  <worldbody>
+    <!-- A tracked robot body -->
+    <body name="base_robot" pos="0 0 0.1">
+      <geom type="sphere" size="0.1" rgba="0.2 0.2 1 1"/>
+    </body>
+    <!-- Camera watching the robot -->
+    <camera name="main_cam" mode="track" target="base_robot" pos="0 -3 2" quat="0.7071 0 0.7071 0" fovy="60" resolution="640 480"/>
+
+  </worldbody>
+</mujoco>

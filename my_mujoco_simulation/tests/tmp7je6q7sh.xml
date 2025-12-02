@@ -1,0 +1,165 @@
+<mujoco model="spot scene">
+  <compiler angle="radian" />
+
+  <statistic center="0.15 0.1 0.38" extent=".8" meansize="0.05" />
+  <option integrator="implicitfast" cone="elliptic" impratio="100" gravity="0 0 -9.81" />
+
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+    <rgba haze="0.15 0.25 0.35 1" />
+    <global azimuth="220" elevation="-10" ellipsoidinertia="true" />
+    <quality shadowsize="8192" />
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072" />
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300" />
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2" />
+  <material name="robot0_BlackAbs" rgba="0.1 0.1 0.1 1" />
+    <material name="robot0_wrap" rgba="0.878431 0.666666 0.227450 1" />
+
+    <mesh file="body_0.obj" />
+    <mesh file="body_1.obj" />
+    <mesh file="front_left_hip.obj" />
+    <mesh file="front_left_upper_leg_0.obj" />
+    <mesh file="front_left_upper_leg_1.obj" />
+    <mesh file="front_left_lower_leg.obj" />
+    <mesh file="front_right_hip.obj" />
+    <mesh file="front_right_upper_leg_0.obj" />
+    <mesh file="front_right_upper_leg_1.obj" />
+    <mesh file="front_right_lower_leg.obj" />
+    <mesh file="rear_left_hip.obj" />
+    <mesh file="rear_left_upper_leg_0.obj" />
+    <mesh file="rear_left_upper_leg_1.obj" />
+    <mesh file="rear_left_lower_leg.obj" />
+    <mesh file="rear_right_hip.obj" />
+    <mesh file="rear_right_upper_leg_0.obj" />
+    <mesh file="rear_right_upper_leg_1.obj" />
+    <mesh file="rear_right_lower_leg.obj" />
+    <mesh file="body_collision.obj" />
+    <mesh file="left_upper_leg_collision.obj" />
+    <mesh file="left_lower_leg_collision.obj" />
+    <mesh file="right_upper_leg_collision.obj" />
+    <mesh file="right_lower_leg_collision.obj" />
+  </asset>
+
+  <worldbody>
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane" />
+  <light name="robot0_spotlight" mode="targetbodycom" target="robot0_body" pos="3 0 4" cutoff="30" />
+    <body name="robot0_body" childclass="robot0_spot" pos="0 0 .75">
+      <light name="robot0_tracking" mode="trackcom" pos="0 0 2" />
+      <freejoint name="robot0_freejoint" />
+      <inertial pos="0.0063944 -9.81216e-05 0.000911379" mass="32.86" diaginertia="0.13144 0.13144 0.13144" />
+      <geom mesh="robot0_body_0" material="robot0_BlackAbs" class="robot0_visual" />
+      <geom mesh="robot0_body_1" material="robot0_wrap" class="robot0_visual" />
+      <geom mesh="robot0_body_collision" class="robot0_collision" />
+      <body name="robot0_fl_hip" pos="0.29785 0.055 0">
+        <inertial pos="-0.00537435 0.0128418 9.87523e-05" quat="1 1 -1 1" mass="1.68" diaginertia="0.00226544 0.00211474 0.00181296" />
+        <joint name="robot0_fl_hx" axis="1 0 0" range="-0.785398 0.785398" />
+        <geom material="robot0_BlackAbs" mesh="robot0_front_left_hip" class="robot0_visual" />
+        <body name="robot0_fl_uleg" pos="0 0.1108 0">
+          <inertial pos="0.00514237 -0.00243237 -0.121009" mass="2.34" diaginertia="0.0275596 0.0273549 0.00284815" />
+          <joint name="robot0_fl_hy" axis="0 1 0" range="-0.898845 2.29511" />
+          <geom mesh="robot0_front_left_upper_leg_0" material="robot0_wrap" class="robot0_visual" />
+          <geom mesh="robot0_front_left_upper_leg_1" material="robot0_BlackAbs" class="robot0_visual" />
+          <geom mesh="robot0_left_upper_leg_collision" class="robot0_collision" />
+          <body name="robot0_fl_lleg" pos="0.025 0 -0.32">
+            <inertial pos="0.00225794 4.6076e-05 -0.180082" quat="1 0 0 1" mass="0.35" diaginertia="0.00405032 0.00399902 0.00014934" />
+            <joint name="robot0_fl_kn" axis="0 1 0" range="-2.7929 -0.254402" />
+            <geom material="robot0_BlackAbs" mesh="robot0_front_left_lower_leg" class="robot0_visual" />
+            <geom mesh="robot0_left_lower_leg_collision" class="robot0_collision" />
+            <geom name="robot0_FL" class="robot0_foot" />
+          </body>
+        </body>
+      </body>
+      <body name="robot0_fr_hip" pos="0.29785 -0.055 0">
+        <inertial pos="-0.00537435 -0.0128418 -9.87523e-05" quat="1 1 -1 1" mass="1.68" diaginertia="0.00226544 0.00211474 0.00181296" />
+        <joint name="robot0_fr_hx" axis="1 0 0" range="-0.785398 0.785398" />
+        <geom material="robot0_BlackAbs" mesh="robot0_front_right_hip" class="robot0_visual" />
+        <body name="robot0_fr_uleg" pos="0 -0.1108 0">
+          <inertial pos="0.00514237 0.00243237 -0.121009" mass="2.34" diaginertia="0.0275596 0.0273549 0.00284815" />
+          <joint name="robot0_fr_hy" axis="0 1 0" range="-0.898845 2.24363" />
+          <geom mesh="robot0_front_right_upper_leg_0" material="robot0_wrap" class="robot0_visual" />
+          <geom mesh="robot0_front_right_upper_leg_1" material="robot0_BlackAbs" class="robot0_visual" />
+          <geom mesh="robot0_right_upper_leg_collision" class="robot0_collision" />
+          <body name="robot0_fr_lleg" pos="0.025 0 -0.32">
+            <inertial pos="0.00225794 4.6076e-05 -0.180082" quat="1 0 0 1" mass="0.35" diaginertia="0.00405032 0.00399902 0.00014934" />
+            <joint name="robot0_fr_kn" axis="0 1 0" range="-2.7929 -0.255648" />
+            <geom material="robot0_BlackAbs" mesh="robot0_front_right_lower_leg" class="robot0_visual" />
+            <geom mesh="robot0_right_lower_leg_collision" class="robot0_collision" />
+            <geom name="robot0_FR" class="robot0_foot" />
+          </body>
+        </body>
+      </body>
+      <body name="robot0_hl_hip" pos="-0.29785 0.055 0">
+        <inertial pos="0.00537435 0.0128418 -9.87523e-05" quat="1 1 -1 1" mass="1.68" diaginertia="0.00226544 0.00211474 0.00181296" />
+        <joint name="robot0_hl_hx" axis="1 0 0" range="-0.785398 0.785398" />
+        <geom material="robot0_BlackAbs" mesh="robot0_rear_left_hip" class="robot0_visual" />
+        <body name="robot0_hl_uleg" pos="0 0.1108 0">
+          <inertial pos="0.00514237 -0.00243237 -0.121009" mass="2.34" diaginertia="0.0275596 0.0273549 0.00284815" />
+          <joint name="robot0_hl_hy" axis="0 1 0" range="-0.898845 2.29511" />
+          <geom mesh="robot0_rear_left_upper_leg_0" material="robot0_wrap" class="robot0_visual" />
+          <geom mesh="robot0_rear_left_upper_leg_1" material="robot0_BlackAbs" class="robot0_visual" />
+          <geom mesh="robot0_left_upper_leg_collision" class="robot0_collision" />
+          <body name="robot0_hl_lleg" pos="0.025 0 -0.32">
+            <inertial pos="0.00225794 4.6076e-05 -0.180082" quat="1 0 0 1" mass="0.35" diaginertia="0.00405032 0.00399902 0.00014934" />
+            <joint name="robot0_hl_kn" axis="0 1 0" range="-2.7929 -0.247067" />
+            <geom material="robot0_BlackAbs" mesh="robot0_rear_left_lower_leg" class="robot0_visual" />
+            <geom mesh="robot0_left_lower_leg_collision" class="robot0_collision" />
+            <geom name="robot0_HL" class="robot0_foot" />
+          </body>
+        </body>
+      </body>
+      <body name="robot0_hr_hip" pos="-0.29785 -0.055 0">
+        <inertial pos="0.00537435 -0.0128418 9.87523e-05" quat="1 1 -1 1" mass="1.68" diaginertia="0.00226544 0.00211474 0.00181296" />
+        <joint name="robot0_hr_hx" axis="1 0 0" range="-0.785398 0.785398" />
+        <geom material="robot0_BlackAbs" mesh="robot0_rear_right_hip" class="robot0_visual" />
+        <body name="robot0_hr_uleg" pos="0 -0.1108 0">
+          <inertial pos="0.00514237 0.00243237 -0.121009" mass="2.34" diaginertia="0.0275596 0.0273549 0.00284815" />
+          <joint name="robot0_hr_hy" axis="0 1 0" range="-0.898845 2.29511" />
+          <geom mesh="robot0_rear_right_upper_leg_0" material="robot0_wrap" class="robot0_visual" />
+          <geom mesh="robot0_rear_right_upper_leg_1" material="robot0_BlackAbs" class="robot0_visual" />
+          <geom mesh="robot0_right_upper_leg_collision" class="robot0_collision" />
+          <body name="robot0_hr_lleg" pos="0.025 0 -0.32">
+            <inertial pos="0.00225794 4.6076e-05 -0.180082" quat="1 0 0 1" mass="0.35" diaginertia="0.00405032 0.00399902 0.00014934" />
+            <joint name="robot0_hr_kn" axis="0 1 0" range="-2.7929 -0.248282" />
+            <geom material="robot0_BlackAbs" mesh="robot0_rear_left_lower_leg" class="robot0_visual" />
+            <geom mesh="robot0_right_lower_leg_collision" class="robot0_collision" />
+            <geom name="robot0_HR" class="robot0_foot" />
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+<default><default class="robot0_spot">
+      <geom solref="0.004 1" />
+      <joint actuatorfrcrange="-1000 1000" />
+      <position kp="500" kv="40" inheritrange="1" />
+      <default class="robot0_visual">
+        <geom group="2" type="mesh" contype="0" conaffinity="0" />
+      </default>
+      <default class="robot0_collision">
+        <geom group="3" type="mesh" />
+        <default class="robot0_foot">
+          <geom type="sphere" size="0.036" pos="0 0 -0.3365" priority="1" condim="6" solimp="0.015 1 0.036" friction="0.8 0.02 0.01" />
+        </default>
+      </default>
+    </default>
+  </default><actuator><position class="robot0_spot" name="robot0_fl_hx" joint="robot0_fl_hx" />
+    <position class="robot0_spot" name="robot0_fl_hy" joint="robot0_fl_hy" />
+    <position class="robot0_spot" name="robot0_fl_kn" joint="robot0_fl_kn" />
+    <position class="robot0_spot" name="robot0_fr_hx" joint="robot0_fr_hx" />
+    <position class="robot0_spot" name="robot0_fr_hy" joint="robot0_fr_hy" />
+    <position class="robot0_spot" name="robot0_fr_kn" joint="robot0_fr_kn" />
+    <position class="robot0_spot" name="robot0_hl_hx" joint="robot0_hl_hx" />
+    <position class="robot0_spot" name="robot0_hl_hy" joint="robot0_hl_hy" />
+    <position class="robot0_spot" name="robot0_hl_kn" joint="robot0_hl_kn" />
+    <position class="robot0_spot" name="robot0_hr_hx" joint="robot0_hr_hx" />
+    <position class="robot0_spot" name="robot0_hr_hy" joint="robot0_hr_hy" />
+    <position class="robot0_spot" name="robot0_hr_kn" joint="robot0_hr_kn" />
+  </actuator><contact><exclude body1="robot0_body" body2="robot0_fl_uleg" />
+    <exclude body1="robot0_body" body2="robot0_fr_uleg" />
+    <exclude body1="robot0_body" body2="robot0_hl_uleg" />
+    <exclude body1="robot0_body" body2="robot0_hr_uleg" />
+  </contact></mujoco>

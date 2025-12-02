@@ -1,0 +1,27 @@
+digraph pastafarianism {
+ordering=out;
+graph [fontname="times-roman"];
+node [fontname="times-roman"];
+edge [fontname="times-roman"];
+Sequence [label="Ⓜ Sequence", shape=box, style=filled, fillcolor=orange, fontsize=9, fontcolor=black];
+"Sequence*" [label="Ⓜ Sequence*", shape=box, style=filled, fillcolor=orange, fontsize=9, fontcolor=black];
+Sequence -> "Sequence*";
+MovePose [label=MovePose, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+"Sequence*" -> MovePose;
+OpenGripper [label=OpenGripper, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+"Sequence*" -> OpenGripper;
+"MovePose*" [label="MovePose*", shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+"Sequence*" -> "MovePose*";
+CloseGripper [label=CloseGripper, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+"Sequence*" -> CloseGripper;
+Parallel [label="Parallel\nSuccessOnOne", shape=parallelogram, style=filled, fillcolor=gold, fontsize=9, fontcolor=black];
+"Sequence*" -> Parallel;
+"MovePose**" [label="MovePose**", shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Parallel -> "MovePose**";
+MeasureAppliedForce [label=MeasureAppliedForce, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Parallel -> MeasureAppliedForce;
+"MovePose***" [label="MovePose***", shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+"Sequence*" -> "MovePose***";
+"OpenGripper*" [label="OpenGripper*", shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+"Sequence*" -> "OpenGripper*";
+}

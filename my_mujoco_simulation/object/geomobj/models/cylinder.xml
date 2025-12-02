@@ -1,0 +1,21 @@
+<mujoco model="cylinder_model">
+    <worldbody>
+        <!-- Free object (pickable) -->
+        <body name="cylinder_base" pos="0 0 0.5" >
+        <joint type="free"/>
+            <!-- Cylinder geometry -->
+            <geom 
+                name="cylinder_geom"
+                type="cylinder"
+                size="0.05 0.1"          
+                rgba="0.2 0.6 0.9 1"     
+                contype="1"              
+                conaffinity="1"          
+                friction="1 0.005 0.0001"
+                mass="1.0"
+            />
+            <!-- Optional site for robot to target when grasping -->
+            <!--<site name="cylinder_handle" pos="0 0 0.1" size="0.01" rgba="0 1 0 0.5"/>-->
+        </body>
+    </worldbody>
+</mujoco>

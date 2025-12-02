@@ -1,0 +1,124 @@
+<mujoco model="mobot_lab">
+<compiler angle="radian" autolimits="true"/>
+
+  <!-- Assets: meshes used in the environment -->
+  <asset>
+    <mesh name="lab" file="../environment/models/mobot_lab/mesh/mobot_lab.stl" scale="1 1 1"/>
+  </asset>
+
+  <option gravity="0 0 -9.81" integrator="implicitfast" impratio="1000" timestep=".001" cone="elliptic" noslip_iterations="3"/>
+  <option><flag multiccd="enable"/> </option>
+  <!-- The world and static elements -->
+  <worldbody>
+  
+        <!-- Wall 0 -->
+        <body name="wall_0" pos="-8.219 -0.00025 0" quat="0.7071055 0 0 0.7071081">
+            <geom type="box" pos="0 0 1.22" size="9.011 0.04 1.22" rgba="0.7 0.7 0.7 1"/>
+        </body>
+        <body pos = "0 0 2">
+        </body>
+        <!-- Wall 1 -->
+        <body name="wall_1" pos="-2.75 8.97075 0" quat="1 0 0 0">
+            <geom type="box" pos="-5.35985 0 1.22" size="0.149151 0.04 1.22" rgba="0.7 0.7 0.7 1"/>
+            <geom type="box" pos="-1.15386 0 0.47" size="4.056835 0.04 0.47" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="4.20599 0 0.46925" size="1.303015 0.04 0.46925" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="5.36099 0 1.68925" size="0.148015 0.04 0.75075" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="-2.79205 0 1.69" size="0.1686455 0.04 0.75" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="-0.081401 0 1.69" size="0.232007 0.04 0.75" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="2.68179 0 1.69" size="0.2211815 0.04 0.75" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="4.06 0 2.29725" size="1.16 0.04 0.14275" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="-4.0857 0 2.2975" size="1.125 0.04 0.1425" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="-1.46841 0 2.2975" size="1.155 0.04 0.1425" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="1.30561 0 2.2975" size="1.155 0.04 0.1425" rgba="0.7 0.7 0.7 1" />
+        </body>
+
+        <!-- Wall 2 -->
+        <body name="wall_2" pos="2.719 5.79975 0" quat="0.7071055 0 0 -0.7071081 ">
+            <geom type="box" pos="0 0 1.22" size="3.211 0.04 1.22" rgba="0.7 0.7 0.7 1" />
+        </body>
+
+        <!-- Wall 3 -->
+        <body name="wall_3" pos="5.469 2.62875 0" quat="1 0 0 0">
+            <geom type="box" pos="-2.38604 0 1.22" size="0.4039655 0.04 1.22" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="0.403965 0 0.664" size="2.386035 0.04 0.664" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="1.98396 0 1.884" size="0.806035 0.04 0.556" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="-0.402069 0 2.2055" size="1.58 0.04 0.2345" rgba="0.7 0.7 0.7 1" />
+        </body>
+
+        <!-- Wall 4 -->
+        <body name="wall_4" pos="8.219 -3.17125 0" quat="0.7071055 0 0 -0.7071081 ">
+            <geom type="box" pos="-5.53844 0 1.22" size="0.3015635 0.04 1.22" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="0.301563 0 0.664" size="5.53845 0.04 0.664" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="2.65156 0 1.884" size="3.188435 0.04 0.556" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="-2.88687 0 2.2055" size="2.35 0.04 0.2345" rgba="0.7 0.7 0.7 1" />
+        </body>
+
+        <!-- Wall 5 -->
+        <body name="wall_5" pos="-1e-06 -8.97125 0" quat="0 0 0 1">
+            <geom type="box" pos="-5.00975 0 1.22" size="3.24925 0.04 1.22" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="3.24925 0 0.252" size="5.00975 0.04 0.252" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="4.01175 0 1.472" size="4.24725 0.04 0.968" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="-0.998 0 2.2345" size="0.7625 0.04 0.2055" rgba="0.7 0.7 0.7 1" />
+        </body>
+
+        <!-- Wall 6 -->
+        <body name="wall_6" pos="-0.075 7.56525 0" quat="0.7071055 0 0 -0.7071081 ">
+            <geom type="box" pos="0 0 1.22" size="1.4455 0.04 1.22" rgba="0 0 0 0.2" />
+        </body>
+
+        <!-- Wall 7 -->
+        <body name="wall_7" pos="1.322 6.15975 0" quat="1 0 0 0">
+            <geom type="box" pos="-1.3205 0 1.22" size="0.1165 0.04 1.22" rgba="0 0 0 0.2" />
+            <geom type="box" pos="0.6165 0 1.22" size="0.8205 0.04 1.22" rgba="0 0 0 0.2" />
+            <geom type="box" pos="-0.704 0 1.82" size="0.5 0.04 0.62" rgba="0 0 0 0.2" />
+        </body>
+
+        <!-- Wall 8 -->
+        <body name="wall_8" pos="-5.573 6.95675 0" quat="0.7071055 0 0 -0.7071081 ">
+            <geom type="box" pos="-1.86269 0 1.22" size="0.1918115 0.04 1.22" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="0.191811 0 0.664" size="1.86269 0.04 0.664" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="1.87181 0 1.884" size="0.1826885 0.04 0.556" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="0.009123 0 2.264" size="1.68 0.04 0.176" rgba="0.7 0.7 0.7 1" />
+        </body>
+
+        <!-- Wall 9 -->
+        <body name="wall_9" pos="-6.896 4.94275 0" quat="0 0 0 1">
+            <geom type="box" pos="-1.18609 0 1.22" size="0.176907 0.04 1.22" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="0.176907 0 0.045" size="1.18609 0.04 0.045" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="-0.027899 0 1.265" size="0.0312875 0.04 1.175" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="1.15819 0 1.265" size="0.2048055 0.04 1.175" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="-0.534186 0 2.23" size="0.475 0.04 0.21" rgba="0.7 0.7 0.7 1" />
+            <geom type="box" pos="0.478389 0 2.23" size="0.475 0.04 0.21" rgba="0.7 0.7 0.7 1" />
+        </body>
+
+        <!-- Wall 11 -->
+        <body name="wall_11" pos="2.9225 -3.0685 0" quat="1 0 0 0">
+            <geom type="box" pos="0 0 1.22" size="0.2425 0.14 1.22" rgba="0.7 0.7 0.7 1" />
+        </body>
+
+        <!-- Wall 12 -->
+        <body name="wall_12" pos="7.9835 -3.0985 0" quat="1 0 0 0">
+            <geom type="box" pos="0 0 1.22" size="0.2065 0.14 1.22" rgba="0.7 0.7 0.7 1" />
+        </body>
+
+        <!-- Wall 13 -->
+        <!--><body name="wall_13" pos="-5.5425 -3.0785 0" quat="1 0 0 0">
+            <geom type="box" pos="0 0 1.22" size="0.2425 0.14 1.22" rgba="0.7 0.7 0.7 1" />
+        </body><-->
+
+        <!-- Wall 14 -->
+        <!--><body name="wall_14" pos="-1.9825 -3.0985 0" quat="1 0 0 0">
+            <geom type="box" pos="0 0 1.22" size="0.2065 0.14 1.22" rgba="0.7 0.7 0.7 1" />
+        </body><-->
+
+        <!-- Wall 15/ floor -->
+        <body name="wall_15" pos="0 0 0" quat="1 0 0 0">
+            <geom type="plane" pos="0 0 0" size="10 10 0.1" rgba="0.9 0.9 0.9 1" contype="1" conaffinity="1"/>
+        </body>
+        
+        <camera mode="fixed" name="birdview" pos="0 0 15.0" quat="0.7071 0 0 0.7071"/>
+
+  </worldbody>
+    <actuator></actuator>
+
+</mujoco>

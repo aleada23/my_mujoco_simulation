@@ -1,0 +1,37 @@
+digraph pastafarianism {
+ordering=out;
+graph [fontname="times-roman"];
+node [fontname="times-roman"];
+edge [fontname="times-roman"];
+Root [label="Ⓜ Root", shape=box, style=filled, fillcolor=orange, fontsize=9, fontcolor=black];
+Table [label="Ⓜ Table", shape=box, style=filled, fillcolor=orange, fontsize=9, fontcolor=black];
+Root -> Table;
+MovePose [label=MovePose, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Table -> MovePose;
+MoveDownUntillContact [label=MoveDownUntillContact, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Table -> MoveDownUntillContact;
+MeasureGripperSites [label=MeasureGripperSites, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Table -> MeasureGripperSites;
+Object [label="Ⓜ Object", shape=box, style=filled, fillcolor=orange, fontsize=9, fontcolor=black];
+Root -> Object;
+MoveJoints [label=MoveJoints, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Object -> MoveJoints;
+"MovePose*" [label="MovePose*", shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Object -> "MovePose*";
+OpenGripper [label=OpenGripper, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Object -> OpenGripper;
+"MovePose**" [label="MovePose**", shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Object -> "MovePose**";
+MeasureMassWithTorque [label=MeasureMassWithTorque, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Object -> MeasureMassWithTorque;
+CloseGripper [label=CloseGripper, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Object -> CloseGripper;
+Lift [label=Lift, shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Object -> Lift;
+MeasureMassWithTorque_1 [label="MeasureMassWithTorque_1", shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Object -> MeasureMassWithTorque_1;
+"MovePose***" [label="MovePose***", shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Object -> "MovePose***";
+"OpenGripper*" [label="OpenGripper*", shape=ellipse, style=filled, fillcolor=gray, fontsize=9, fontcolor=black];
+Object -> "OpenGripper*";
+}
