@@ -1,0 +1,19 @@
+<mujoco model="bottle_mesh_model">
+    <asset>
+        <!-- Define the bottle mesh -->
+        <mesh name="bottle_mesh" file="../object/geomobj/models/assets/bottle.obj" scale="0.004 0.005 0.004"/>
+    </asset>
+    <worldbody>
+        <body name="bottle_base" pos="0.0 0.0 1.125" quat="0.7071055 0 0 0.7071081">
+            <!-- Free-floating joint -->
+            <joint name="free_joint_blue" type="free"/>
+            <!-- Single mesh geom representing the whole bottle -->
+            <!-- collision mesh -->
+            <geom type="mesh" mesh="bottle_mesh" contype="1" conaffinity="1" solref="0.02 1" solimp="0.9 0.95 0.001" mass="0.5"/>
+            <geom name="box_geom" type="box" size="0.025 0.05 0.025" pos = "0 -0.18 0" rgba="1 1 1 1" contype="1" conaffinity="1" friction="1 0.0 0.0" mass="1.0" priority="1" solref="0.0001 1" solimp="0.9 0.95 0.01"
+            />
+            <!-- visual mesh -->
+            <geom type="mesh" mesh="bottle_mesh" contype="0" conaffinity="0" rgba="0.2 0.6 0.9 1"/>
+        </body>
+    </worldbody>
+</mujoco>

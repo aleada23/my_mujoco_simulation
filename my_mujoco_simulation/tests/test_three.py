@@ -37,6 +37,7 @@ init_phases = [0.2, 0.7, 0.7, 0.2]
 
 wanted_velocity = [0.3, 0.0, 0.0]
 step_length = 0.2
+step_y_length = 0.0
 step_height = 0.05
 step_data = []
 try:
@@ -45,34 +46,46 @@ try:
         while viewer.is_running():
             legs_control = np.zeros(19)
             #legs_control = np.zeros(12)
+            cycle_time = 2         # total step period
             jac_idx = 0
 
-            time_ = sim_data.time % 2
-            phase = time_/2
+            time_ = sim_data.time % cycle_time
+            phase = time_/cycle_time
             
             for i in range(len(model_legs)):
                 leg_phase = phase + init_phases[i]
-                cycle_time = 0.5         # total step period
+               
                 stance_ratio = 0.5     # 60% stance, 40% swing
                 #phase = (sim_data.time % cycle_time) 
 
                
                 leg_phase = (phase + init_phases[i]) % 1.0
+                
                 if leg_phase < stance_ratio:
                     s = leg_phase / stance_ratio
                     x = (s - 1.0) * step_length / 2
+                    if i == 0 or i ==2:
+                        y = 0.12
+                        y += (s - 1.0) * step_y_length / 2
+                    else:
+                        y = -0.12
+                        y += -(s - 1.0) * step_y_length / 2
                     z = 0.0
                 else:
                     s = (leg_phase - stance_ratio) / (1 - stance_ratio)
                     x = -step_length/2 + s * step_length
+                    if i == 0 or i ==2:
+                        y = 0.12
+                        y += -step_y_length/2 + s * step_y_length
+                    else:
+                        y = -0.12
+                        y += step_y_length/2 + s * step_y_length
+                   
                     z = step_height * 4 * s * (1 - s) 
-                if i == 0 or i ==2:
-                    y = 0.12
-                else:
-                    y = -0.12
+                
                 p_target_hip = np.array([x, y, z-0.409])
                 if i ==0:
-                    step_data.append([x,z])
+                    step_data.append([x,y,z])
                 body_id = mujoco.mj_name2id(sim_model, mujoco.mjtObj.mjOBJ_GEOM, geom_Jac[i])
                 nv = sim_model.nv
                 Jp_full = np.zeros((3, nv))  # Linear velocity Jacobian
@@ -114,6 +127,7 @@ except KeyboardInterrupt:
     plt.figure(figsize=(10, 4))
     plt.plot(time_plot, step_data[:, 0], label="X")
     plt.plot(time_plot, step_data[:, 1], label="Y")
+    plt.plot(time_plot, step_data[:, 2], label="Y")
     
 
     plt.title("Sensor Torques over Time")

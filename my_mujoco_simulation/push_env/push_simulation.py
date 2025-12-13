@@ -49,7 +49,7 @@ target_poses = [[0.3, 0.0, 0.4, 0.0, 1.0, 0.0, 0.0], [0.5, 0.0, 0.35, 0.0, 1.0, 
 idx = 0
 
 try:
-    with mujoco.viewer.launch_passive(sim_model, sim_data, show_left_ui = True, show_right_ui = True) as viewer:
+    with mujoco.viewer.launch_passive(sim_model, sim_data, show_left_ui = False, show_right_ui = True) as viewer:
 
         while viewer.is_running():
             #ROBOT STATE 7 JOINTS
@@ -75,11 +75,11 @@ try:
             if np.allclose(error[:], 0, atol=1e-2):
                 idx = idx + 1
             #VELOCITY CONTROLLER with cartesian velocity
-            #target_vel = [0.0, 0.0, 0.0, 0.0, 0.0, 0.1]
-            #dq = action_utils.velocity_cart2joint(sim_model, sim_data, robot, robot.get_end_effector_name(sim_model), target_vel)
+            target_vel = [0.0, 0.0, 0.0, 0.0, 0.0, 0.1]
+            dq = action_utils.velocity_cart2joint(sim_model, sim_data, robot, robot.get_end_effector_name(sim_model), target_vel)
 
             #APPLY VELOCITIES TO THE CONTROLLER
-            #controller.set_joint_velocity(dq)
+            controller.set_joint_velocity(dq)
             (np.linalg.matrix_rank(robot.get_Jacobian(sim_model, sim_data)))
             #MUJOCO SERVICE FUNCTIONS
             mujoco.mj_step(sim_model, sim_data)
@@ -88,18 +88,24 @@ try:
             table_contact = False
             for i in range(sim_data.ncon):
                 contact = sim_data.contact[i]
-                if "hand" in mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2) or "finger" in mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2):
-                    if mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1) == sim.get_object(2).get_call_geom_name():
+                geom1_name = mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1)
+                geom2_name = mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2)
+                object_geom_name = sim.get_object(2).get_call_geom_name()
+                table_geom_name = sim.get_object(0).get_call_geom_name()
+
+                if geom2_name and ("hand" in geom2_name or "finger" in geom2_name):
+                    if geom1_name == object_geom_name:
                         object_contact = True
-                    elif mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1) == sim.get_object(0).get_call_geom_name():
+                    elif geom1_name == table_geom_name:
                         table_contact = True
-                if "hand" in mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1) or "finger" in mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom1):
-                    if mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2) == sim.get_object(2).get_call_geom_name():
+                if geom1_name and ("hand" in geom1_name or "finger" in geom1_name):
+                    if geom2_name == object_geom_name:
                         object_contact = True
-                    elif mujoco.mj_id2name(sim_model, mujoco.mjtObj.mjOBJ_GEOM, contact.geom2) == sim.get_object(0).get_call_geom_name():
+                    elif geom2_name == table_geom_name:
                         table_contact = True
+
 
             viewer.sync()
-
+            print(ee_pose)
 except KeyboardInterrupt:
     print("Simulation interrupted by user.")

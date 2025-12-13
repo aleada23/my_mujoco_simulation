@@ -16,7 +16,8 @@ Kuka_PATH = "../robot/models/managerie_kuka/robot.xml"
 table_PATH = "../object/table/models/simple_table.xml"
 pedestal_PATH = "../object/pedestal/models/box_pedestal.xml"
 
-MODEL_PATH = "../environment/models/mobot_lab/mobot_lab.xml"
+#MODEL_PATH = "../environment/models/mobot_lab/mobot_lab.xml"
+MODEL_PATH = "../environment/models/scene/scene.xml"
 
 CAMERA_PATH = "../camera/models/camera_example.xml"
 
@@ -31,13 +32,16 @@ sim.add_robot(Franka_PATH, position="0.5 -0.8 0.5", orientation="0.7071068 0.0 0
 
 
 sim.add_object(table_PATH)
-sim.add_object(CAMERA_PATH)
+#sim.add_object(CAMERA_PATH)
 sim.add_object(pedestal_PATH, pos = "0.5 -0.8 0", size = "0.15 0.15 0.5")
 
-sim.add_object("../object/geomobj/models/box.xml", pos = "0.5 0.0 2", size = "0.02 0.02 0.12", mass = "0.5", color= "0 1 0 1")
-sim.add_object("../object/geomobj/models/box.xml", pos = "0.35 0.0 2", size = "0.02 0.02 0.12", mass = "0.5", color= "1 0 0 1")
-sim.add_object("../object/geomobj/models/box.xml", pos = "0.65 0.0 2", size = "0.02 0.02 0.12", mass = "0.5", color= "0 0 1 1")
+#sim.add_object("../object/geomobj/models/box.xml", pos = "0.35 0.0 2", size = "0.02 0.26 0.12", mass = "0.5", color= "0.666 0.8 0.706 1")
+#sim.add_object("../object/geomobj/models/box.xml", pos = "0.5 0.0 2", size = "0.02 0.02 0.12", mass = "0.5", color= "0.078 0.294 0.412 1")
+#sim.add_object("../object/geomobj/models/box.xml", pos = "0.65 0.0 2", size = "0.02 0.02 0.12", mass = "0.5", color= "0.902 0 0.588 1")
 
+sim.add_object("../object/geomobj/models/bottle.xml", pos = "0.35 0.1 1.1", color= "0.666 0.8 0.706 1", quat = "0.7071055 0.7071081 0 0")
+sim.add_object("../object/geomobj/models/bottle.xml", pos = "0.5 0.1 1.1", color= "0.078 0.294 0.412 1", quat = "0.7071055 0.7071081 0 0")
+sim.add_object("../object/geomobj/models/bottle.xml", pos = "0.65 0.1 1.1", color= "0.902 0 0.588 1" , quat = "0.7071055 0.7071081 0 0")
 
 
 # Launch simulation
@@ -50,17 +54,17 @@ object1_pose = [0.8, 0.0, 0.55, 0.7071068, 0.0, 0.7071068, 0.0]
 offset_pose = [0.8, 0.0, 0.7, 0.7071068, 0.0, 0.7071068, 0.0]
 offset_lift_pose = [0.8, 0.0, 0.7, 0.7071068, 0.0, 0.7071068, 0.0]
 above_table = [0.5, 0.2, 0.5, 0.0, 0.7071068, 0.7071068, 0.0]
-bt_definition = [
-    "Sequence",
-    ["MoveJoints", {"target_pos": home}],
-    ["Sequence", ["MovePose", {"target_pose": offset_pose}],["OpenGripper", {}],["MovePose", {"target_pose": object1_pose}],["CloseGripper", {}],["MeasureGripperOpnening", {}],["MovePose", {"target_pose": offset_lift_pose}],["MeasureMassWithTorque", {}],["MovePose", {"target_pose": object1_pose}],["OpenGripper", {}]],
-        ["Sequence",["MovePose", {"target_pose": above_table}],["MoveDownUntillContact", {"target_pose": above_table}],["MeasureGripperSites", {}]],["MoveJoints", {"target_pos": home}]]
-
+#bt_definition = [
+#    "Sequence",
+#    ["MoveJoints", {"target_pos": home}],
+#    ["Sequence", ["MovePose", {"target_pose": offset_pose}],["OpenGripper", {}],["MovePose", {"target_pose": object1_pose}],["CloseGripper", {}],["MeasureGripperOpnening", {}],["MovePose", {"target_pose": offset_lift_pose}],["MeasureMassWithTorque", {}],["MovePose", {"target_pose": object1_pose}],["OpenGripper", {}]],
+#        ["Sequence",["MovePose", {"target_pose": above_table}],["MoveDownUntillContact", {"target_pose": above_table}],["MeasureGripperSites", {}]],["MoveJoints", {"target_pos": home}]]
+bt_definition = ["Sequence",["MoveJoints", {"target_pos": home}]]
 bt_builder = BehaviorTreeManager(sim_model, sim_data, sim.get_robot(0))
 tree = bt_builder.build_tree(bt_definition)
 bt_builder.print_tree()
 try:
-    with mujoco.viewer.launch_passive(sim_model, sim_data, show_left_ui = False, show_right_ui = False) as viewer:
+    with mujoco.viewer.launch_passive(sim_model, sim_data, show_left_ui = False, show_right_ui = True) as viewer:
         #time.sleep(10)
 
         while viewer.is_running():

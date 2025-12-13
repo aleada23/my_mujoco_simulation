@@ -1,7 +1,7 @@
 <mujoco model="cylinder_model">
     <worldbody>
         <!-- Free object (pickable) -->
-        <body name="cylinder_base" pos="0 0 0.5" >
+        <body name="cylinder_base" pos="0 0 0.5">
         <joint type="free"/>
             <!-- Cylinder geometry -->
             <geom 

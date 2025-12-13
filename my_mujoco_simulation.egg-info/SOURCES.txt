@@ -1,0 +1,7 @@
+README.md
+setup.py
+my_mujoco_simulation/__init__.py
+my_mujoco_simulation.egg-info/PKG-INFO
+my_mujoco_simulation.egg-info/SOURCES.txt
+my_mujoco_simulation.egg-info/dependency_links.txt
+my_mujoco_simulation.egg-info/top_level.txt

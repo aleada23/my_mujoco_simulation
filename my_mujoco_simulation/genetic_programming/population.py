@@ -1,5 +1,6 @@
 import numpy as np
 import copy
+import random
 
 class Population:
     def __init__(self, size):
@@ -53,6 +54,9 @@ class Population:
             # cost at index 0 (GP-style)
             ind.insert(0, -1)
             self.current_pop.append(ind)
+
+    def return_pop(self):
+        return copy.deepcopy(self.current_pop)
 
     # ------------------------------------------------------
     # CROSSOVER (ORDER FROM P1, RANDOM PARAM INHERITANCE)
@@ -304,13 +308,15 @@ class Population:
         ]"""
 
         new_pop = []
+        for elem in self.cache:
+            new_pop.append(elem)
 
         while len(new_pop) < self.size:
 
             # -----------------------
             # Select base elite
             # -----------------------
-            e1 = copy.deepcopy(np.random.choice(self.cache))
+            e1 = copy.deepcopy(random.choice(self.cache))
             idx1 = np.random.randint(0, len(self.cache))  # needed for mutation/crossover index
             e1[0] = -1  # reset cost
 
@@ -351,7 +357,6 @@ class Population:
 
         # Replace population
         self.current_pop = new_pop
-
 
     def distance(self, h1, h2, w_order=1.0, w_param=1.0):
     
@@ -414,7 +419,6 @@ class Population:
         sorted_pop = sorted(self.current_pop, key=lambda x: x[0])
         # Keep top-k
         self.cache = [copy.deepcopy(ind) for ind in sorted_pop[:elite_count]]
-
 
     def build_mask(self, p_active=0.5):
         n = len(self.cache)
