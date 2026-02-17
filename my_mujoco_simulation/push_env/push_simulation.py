@@ -10,7 +10,7 @@ ENVIRONMENT_PATH = "../environment/models/mobot_lab/mobot_lab.xml"
 ROBOT_PATH = "../robot/models/managerie_panda/robot.xml"
 TABLE_PATH = "../object/table/models/simple_table_with_target.xml"
 PEDESTAL_PATH = "../object/pedestal/models/box_pedestal.xml"
-time_step = 0.001
+time_step = 0.005
 
 #Create simulation with environment only
 sim = Simulation(env_path=ENVIRONMENT_PATH)
@@ -75,14 +75,16 @@ try:
             if np.allclose(error[:], 0, atol=1e-2):
                 idx = idx + 1
             #VELOCITY CONTROLLER with cartesian velocity
-            target_vel = [0.0, 0.0, 0.0, 0.0, 0.0, 0.1]
-            dq = action_utils.velocity_cart2joint(sim_model, sim_data, robot, robot.get_end_effector_name(sim_model), target_vel)
+            target_vel = [0.1, 0.0, 0.0, 0.0, 0.0, 0.0]
+            dq = action_utils.velocity_cart2joint(sim_model, sim_data, robot, robot.get_end_effector_name(sim_model), error)
 
             #APPLY VELOCITIES TO THE CONTROLLER
             controller.set_joint_velocity(dq)
             (np.linalg.matrix_rank(robot.get_Jacobian(sim_model, sim_data)))
             #MUJOCO SERVICE FUNCTIONS
-            mujoco.mj_step(sim_model, sim_data)
+            
+            for _ in range(100):
+                mujoco.mj_step(sim_model, sim_data)
 
             object_contact = False
             table_contact = False
@@ -106,6 +108,5 @@ try:
 
 
             viewer.sync()
-            print(ee_pose)
 except KeyboardInterrupt:
     print("Simulation interrupted by user.")

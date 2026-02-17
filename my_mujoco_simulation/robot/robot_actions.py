@@ -158,7 +158,7 @@ class MoveJoints(py_trees.behaviour.Behaviour):
             return py_trees.common.Status.SUCCESS
         return py_trees.common.Status.RUNNING
 
-class MeasureGripperSites(py_trees.behaviour.Behaviour):
+class MeasureGripperPose(py_trees.behaviour.Behaviour):
     def __init__(self, name, model, data, robot):
         super().__init__(name)
         self.model = model
@@ -178,10 +178,10 @@ class MeasureGripperSites(py_trees.behaviour.Behaviour):
         self.joint_positions = None
 
     def setup(self, **kwargs):
-        self.logger.debug(f"{self.name} [MeasureGripperSites::setup()]")
+        self.logger.debug(f"{self.name} [ MeasureGripperPose::setup()]")
 
     def initialise(self):
-        self.logger.debug(f"{self.name} [MeasureGripperSites::initialise()]")
+        self.logger.debug(f"{self.name} [ MeasureGripperPose::initialise()]")
 
         self.l_site_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, self.l_site_name)
         self.r_site_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, self.r_site_name)
@@ -210,9 +210,9 @@ class MeasureGripperSites(py_trees.behaviour.Behaviour):
         return py_trees.common.Status.SUCCESS
 
     def terminate(self, new_status):
-        self.logger.debug(f"{self.name} [MeasureGripperSites::terminate()] -> {new_status}")
+        self.logger.debug(f"{self.name} [ MeasureGripperPose::terminate()] -> {new_status}")
 
-class MeasureMassWithTorque(py_trees.behaviour.Behaviour):
+class MeasureMass(py_trees.behaviour.Behaviour):
     def __init__(self, name, model, data, robot):
         super().__init__(name)
         self.model = model
@@ -228,10 +228,10 @@ class MeasureMassWithTorque(py_trees.behaviour.Behaviour):
         self.blackboard.register_key(key=name, access=py_trees.common.Access.WRITE)
 
     def setup(self, **kwargs):
-        self.logger.debug(f"{self.name} [MeasureGripperSites::setup()]")
+        self.logger.debug(f"{self.name} [ MeasureGripperPose::setup()]")
 
     def initialise(self):
-        self.logger.debug(f"{self.name} [MeasureGripperSites::initialise()]")
+        self.logger.debug(f"{self.name} [ MeasureGripperPose::initialise()]")
         self.start_time = self.data.time
         
 
@@ -249,7 +249,7 @@ class MeasureMassWithTorque(py_trees.behaviour.Behaviour):
         return py_trees.common.Status.SUCCESS
 
     def terminate(self, new_status):
-        self.logger.debug(f"{self.name} [MeasureGripperSites::terminate()] -> {new_status}")
+        self.logger.debug(f"{self.name} [ MeasureGripperPose::terminate()] -> {new_status}")
 
 class MeasureGripperOpnening(py_trees.behaviour.Behaviour):
     def __init__(self, name, model, data, robot):
@@ -263,10 +263,10 @@ class MeasureGripperOpnening(py_trees.behaviour.Behaviour):
         self.blackboard.register_key(key=name, access=py_trees.common.Access.WRITE)
 
     def setup(self, **kwargs):
-        self.logger.debug(f"{self.name} [MeasureGripperSites::setup()]")
+        self.logger.debug(f"{self.name} [ MeasureGripperPose::setup()]")
 
     def initialise(self):
-        self.logger.debug(f"{self.name} [MeasureGripperSites::initialise()]")
+        self.logger.debug(f"{self.name} [ MeasureGripperPose::initialise()]")
         self.start_time = self.data.time
         
 
@@ -281,9 +281,9 @@ class MeasureGripperOpnening(py_trees.behaviour.Behaviour):
         return py_trees.common.Status.FAILURE
 
     def terminate(self, new_status):
-        self.logger.debug(f"{self.name} [MeasureGripperSites::terminate()] -> {new_status}")
+        self.logger.debug(f"{self.name} [ MeasureGripperPose::terminate()] -> {new_status}")
 
-class MeasureAppliedForce(py_trees.behaviour.Behaviour):
+class MeasureForces(py_trees.behaviour.Behaviour):
     def __init__(self, name, model, data, robot):
         super().__init__(name)
         self.model = model

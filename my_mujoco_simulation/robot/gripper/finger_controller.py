@@ -42,7 +42,7 @@ class FingerController:
     def _is_gripper_open(self):
         open_range = self.joint_ranges[1] * self.joint_coeff * 2
         joint_pos = self.data.qpos[self.model.wrap_objid[self.tend_adr]] #This is only one of the two joints, next consider both
-        
+        print(joint_pos)
         return abs(open_range - joint_pos) < 0.001
     
     def _is_gripper_close(self):

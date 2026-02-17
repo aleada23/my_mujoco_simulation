@@ -14,10 +14,10 @@ class BehaviorTreeManager:
             "OpenGripper": robot_actions.OpenGripper,
             "CloseGripper": robot_actions.CloseGripper,
             "MoveDownUntillContact": robot_actions.MoveDownUntillContact,
-            "MeasureMassWithTorque": robot_actions.MeasureMassWithTorque,
-            "MeasureGripperSites": robot_actions.MeasureGripperSites,
+            "MeasureMass": robot_actions.MeasureMass,
+            "MeasureGripperPose": robot_actions.MeasureGripperPose,
             "MeasureGripperOpnening": robot_actions.MeasureGripperOpnening,
-            "MeasureAppliedForce": robot_actions.MeasureAppliedForce
+            "MeasureForces ": robot_actions.MeasureForces
         }
 
         # Map condition names to classes

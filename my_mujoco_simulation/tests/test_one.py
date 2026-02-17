@@ -16,8 +16,8 @@ Kuka_PATH = "../robot/models/managerie_kuka/robot.xml"
 table_PATH = "../object/table/models/simple_table.xml"
 pedestal_PATH = "../object/pedestal/models/box_pedestal.xml"
 
-#MODEL_PATH = "../environment/models/mobot_lab/mobot_lab.xml"
-MODEL_PATH = "../environment/models/scene/scene.xml"
+MODEL_PATH = "../environment/models/mobot_lab/mobot_lab.xml"
+#MODEL_PATH = "../environment/models/scene/scene.xml"
 
 CAMERA_PATH = "../camera/models/camera_example.xml"
 
@@ -26,40 +26,49 @@ force_data = []
 sim = Simulation(env_path=MODEL_PATH)
 
 #sim.add_robot(Kuka_PATH, position="0 0 0.1", orientation="1 0 0 0")
-sim.add_robot(Franka_PATH, position="0.5 -0.8 0.5", orientation="0.7071068 0.0 0.0 0.7071068", init_config = [0, 0, 0, -1.57079, 0, 1.57079, -0.7853])
+# [0.0, -0.785, -0.0, -2.356, 0.0, 1.571, 0.785].
+sim.add_robot(Franka_PATH, position="0.5 -0.8 0.9", orientation="0.7071068 0.0 0.0 0.7071068", init_config = [0.0, -0.785, -0.0, -2.356, 0.0, 1.571, 0.785])
+#sim.add_robot(Franka_PATH, position="0.5 -0.8 0.7", orientation="0.7071068 0.0 0.0 0.7071068", init_config = [0, 0, 0, -1.57079, 0, 1.57079, -0.7853])
 
 #sim.add_robot(Franka_PATH, position="10 0 0.8", orientation="1 0 0 0", init_config = [0, 0, 0, -1.57079, 0, 1.57079, -0.7853])
 
 
 sim.add_object(table_PATH)
 #sim.add_object(CAMERA_PATH)
-sim.add_object(pedestal_PATH, pos = "0.5 -0.8 0", size = "0.15 0.15 0.5")
+sim.add_object(pedestal_PATH, pos = "0.5 -0.8 0", size = "0.15 0.15 0.9")
 
 #sim.add_object("../object/geomobj/models/box.xml", pos = "0.35 0.0 2", size = "0.02 0.26 0.12", mass = "0.5", color= "0.666 0.8 0.706 1")
 #sim.add_object("../object/geomobj/models/box.xml", pos = "0.5 0.0 2", size = "0.02 0.02 0.12", mass = "0.5", color= "0.078 0.294 0.412 1")
 #sim.add_object("../object/geomobj/models/box.xml", pos = "0.65 0.0 2", size = "0.02 0.02 0.12", mass = "0.5", color= "0.902 0 0.588 1")
 
-sim.add_object("../object/geomobj/models/bottle.xml", pos = "0.35 0.1 1.1", color= "0.666 0.8 0.706 1", quat = "0.7071055 0.7071081 0 0")
-sim.add_object("../object/geomobj/models/bottle.xml", pos = "0.5 0.1 1.1", color= "0.078 0.294 0.412 1", quat = "0.7071055 0.7071081 0 0")
-sim.add_object("../object/geomobj/models/bottle.xml", pos = "0.65 0.1 1.1", color= "0.902 0 0.588 1" , quat = "0.7071055 0.7071081 0 0")
+#sim.add_object("../object/geomobj/models/bottle.xml", pos = "0.35 0.1 1.1", color= "0.666 0.8 0.706 1", quat = "0.7071055 0.7071081 0 0")
+sim.add_object("../object/geomobj/models/bottle.xml", pos = "0.5 0.2 1.1", color= "0.078 0.294 0.412 1", quat = "0.7071055 0.7071081 0 0")
+#sim.add_object("../object/geomobj/models/bottle.xml", pos = "0.65 0.1 1.1", color= "0.902 0 0.588 1" , quat = "0.7071055 0.7071081 0 0")
 
 
 # Launch simulation
 sim_model, sim_data = sim.launch(pretty_xml=False)
 timestep = 0.001
+jj= None
+pp = None
 #tree_manager = BehaviorTreeManager(sim_model, sim_data, sim.get_robot(0))
 #tree_manager.print_tree()
-home = [0, 0, 0, -1.57079, 0, 1.57079, -0.7853]
-object1_pose = [0.8, 0.0, 0.55, 0.7071068, 0.0, 0.7071068, 0.0]
-offset_pose = [0.8, 0.0, 0.7, 0.7071068, 0.0, 0.7071068, 0.0]
-offset_lift_pose = [0.8, 0.0, 0.7, 0.7071068, 0.0, 0.7071068, 0.0]
-above_table = [0.5, 0.2, 0.5, 0.0, 0.7071068, 0.7071068, 0.0]
+home_pose = np.array([0, 0, 0, -1.57079, 0, 1.57079, -0.7853])
+object1_pose = np.array([0.8, 0.0, 0.55, 0.7071068, 0.0, 0.7071068, 0.0])
+offset_pose = np.array([0.8, 0.0, 0.7, 0.7071068, 0.0, 0.7071068, 0.0])
+offset_lift_pose = np.array([0.8, 0.0, 0.7, 0.7071068, 0.0, 0.7071068, 0.0])
+above_table = np.array([0.5, 0.2, 0.5, 0.0, 0.7071068, 0.7071068, 0.0])
+table_top_approach_pose = np.array([0.5, 0.2, 0.5, 0.0, 0.7071068, 0.7071068, 0.0])
+blue_bottle_pose = np.array([0.5, 0.2, 0.5, 0.0, 0.7071068, 0.7071068, 0.0])
 #bt_definition = [
 #    "Sequence",
 #    ["MoveJoints", {"target_pos": home}],
-#    ["Sequence", ["MovePose", {"target_pose": offset_pose}],["OpenGripper", {}],["MovePose", {"target_pose": object1_pose}],["CloseGripper", {}],["MeasureGripperOpnening", {}],["MovePose", {"target_pose": offset_lift_pose}],["MeasureMassWithTorque", {}],["MovePose", {"target_pose": object1_pose}],["OpenGripper", {}]],
-#        ["Sequence",["MovePose", {"target_pose": above_table}],["MoveDownUntillContact", {"target_pose": above_table}],["MeasureGripperSites", {}]],["MoveJoints", {"target_pos": home}]]
-bt_definition = ["Sequence",["MoveJoints", {"target_pos": home}]]
+#    ["Sequence",["MovePose", {"target_pose": above_table}],["MoveDownUntillContact", {"target_pose": above_table}],[" MeasureGripperPose", {}],["MoveJoints", {"target_pos": home}]],
+#    ["Sequence", ["MovePose", {"target_pose": offset_pose}],["OpenGripper", {}],["MovePose", {"target_pose": object1_pose}],["CloseGripper", {}],["MeasureGripperOpnening", {}],["MovePose", {"target_pose": offset_lift_pose}],[" MeasureMass", {}],["MovePose", {"target_pose": object1_pose}],["OpenGripper", {}], ["MoveJoints", {"target_pos": home}]]]
+#bt_definition = ["Sequence",["MoveJoints", {"target_pos": home}]]
+#bt_definition = ["Sequence",["MoveJoints", {"target_pos": home_pose}], ["Sequence", ["MovePose", {"target_pose": table_top_approach_pose}], ["MoveDownUntillContact", {"target_pose": table_top_approach_pose}], ["MeasureGripperPose", {}], ["MoveJoints", {"target_pos": home_pose}]], ["Sequence",["MovePose", {"target_pose": blue_bottle_pose-offset_pose }], ["OpenGripper", {}], ["MovePose", {"target_pose": blue_bottle_pose }], ["CloseGripper", {}], ["MovePose", {"target_pose": blue_bottle_pose+offset_lift_pose }], ["MeasureMass", {}], ["MovePose", {"target_pose": blue_bottle_pose }], ["OpenGripper", {}], ["MoveJoints", {"target_pos": home_pose}]]]
+bt_definition = ["Sequence",["MoveJoints", {"target_pos": home_pose}], ["Sequence",["MovePose", {"target_pose": blue_bottle_pose-offset_pose}], ["OpenGripper", {}], ["MovePose", {"target_pose": blue_bottle_pose}], ["CloseGripper", {}], ["MovePose", {"target_pose": blue_bottle_pose+offset_lift_pose}], ["MeasureMass", {}], ["MovePose", {"target_pose": blue_bottle_pose}], ["OpenGripper", {}], ["MoveJoints", {"target_pos": home_pose}]]]
+		
 bt_builder = BehaviorTreeManager(sim_model, sim_data, sim.get_robot(0))
 tree = bt_builder.build_tree(bt_definition)
 bt_builder.print_tree()
@@ -68,7 +77,7 @@ try:
         #time.sleep(10)
 
         while viewer.is_running():
-            bt_builder.tick(display_tree = False)
+            #bt_builder.tick(display_tree = False)
             torque_data.append(np.array([sim.get_robot(0).get_sensor_data(sim_data, 3), sim.get_robot(0).get_sensor_data(sim_data, 4), sim.get_robot(0).get_sensor_data(sim_data, 5)]))
             #force_data.append(np.array([sim.get_robot(0).get_sensor_data(sim_data, 0), sim.get_robot(0).get_sensor_data(sim_data, 1), sim.get_robot(0).get_sensor_data(sim_data, 2)]))
 
